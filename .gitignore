@@ -1,4 +1,5 @@
 .idea
+.git
 steptotop.github.io.iml
 package-lock.json
 node_modules
