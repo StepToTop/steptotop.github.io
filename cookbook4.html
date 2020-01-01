@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <h2>{{counter}}</h2>
+    <button @click="increment">+</button>
+    <button @click="decrement(1, $event)">-</button>
+    <button @click="test('teste', $event)">测试</button>
+    <div @click="divClick">
+      <button @click.stop.prevent.once="btnClick">按钮</button>
+      <form action="baidu">
+        <input type="submit" value="test" @click.stop.prevent="btnClick" >
+        <input type="text" @keyup.a="counterInput">
+      </form>
+    </div>
+  </div>
+</body>
+<script src="./src/static/scripts/vue.js"></script>
+<script>
+  const app = new Vue({
+    el: "#app",
+    data: {
+      counter: 0
+    },
+    methods: {
+      increment() {
+        this.counter ++;
+      },
+      decrement(val, event) {
+        console.log(val);
+        console.log(event);
+        this.counter --;
+      },
+      test(val, event) {
+
+      },
+      divClick() {
+        console.log("divClick");
+        // 冒泡
+      },
+      btnClick() {
+        console.log("btnClick");
+
+      },
+      counterInput(val) {
+        console.log("keyup")
+      }
+    }
+  })
+  
+</script>
+</html>

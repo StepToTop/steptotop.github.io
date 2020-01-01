@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>图书购物车</title>
+</head>
+<body>
+  <div id="app">
+    <table>
+      <tr>
+        <th v-for="thead in theads">{{thead}}</th>
+      </tr>
+      <tr v-for="(tbody, index) in tbodys">
+        <td>{{index+1}}</td>
+        <td v-for="(cell, attr, _index) in tbody">
+          <!-- 这里应该可以写得更漂亮一点。 -->
+          <button @click="increment(index)" v-if="_index == 3">+</button>
+          {{cell}}
+          <button @click="decrement(index)" v-if="_index == 3">-</button>
+        </td>
+        <td>
+          <button @click="remove(index)">移除</button>
+        </td>
+      </tr>
+    </table>
+    <p>总价：{{totalFee | toFee}}</p>
+  </div>
+</body>
+<script src="../src/static/scripts/vue.js"></script>
+<script>
+  const app = new Vue({
+    el: "#app",
+    data: {
+      theads: ["", "书籍名称", "出版日期", "价格", "购买数量", "操作"],
+      tbodys: [
+        {
+          names: "《算法导论》",
+          publishYear: "2006-9",
+          // price: 85.00.toFixed(2)
+          price: 85,
+          count: 0
+        },
+        {
+          names: "《UNIX编程艺术》",
+          publishYear: "2006-2",
+          // price: 85.00.toFixed(2)
+          price: 59,
+          count: 0
+        },
+        {
+          names: "《编程珠玑》",
+          publishYear: "2008-10",
+          // price: 85.00.toFixed(2)
+          price: 39,
+          count: 0
+        },
+        {
+          names: "《代码大全》",
+          publishYear: "2006-3",
+          // price: 85.00.toFixed(2)
+          price: 128,
+          count: 0
+        }
+      ]
+    },
+    methods: {
+      increment (index) {
+        this.tbodys[index]["count"] ++
+      },
+      decrement (index) {
+        if (this.tbodys[index]["count"] <= 0) 
+          return;
+        this.tbodys[index]["count"] --
+      },
+      remove (index) {
+        this.tbodys.splice(index, 1)
+      }
+    },
+    computed: {
+      totalFee () {
+        // return this.tbodys.reduce((pre, cur) => {
+        //   return pre += cur.count * cur.price
+        // }, 0)
+        let total = 0;
+        for (let item of this.tbodys) 
+          total += item.count * item.price
+        return total
+      }
+    },
+    filters: {
+      toFee (num) {
+        return "￥"+num.toFixed(2)
+      }
+    }
+  })
+</script>
+</html>

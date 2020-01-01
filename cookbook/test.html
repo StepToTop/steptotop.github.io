@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <component1 :my-movies="movies" ></component1>
+  </div>
+</body>
+
+
+<template id="com1">
+  <div>
+    <h2>{{message}}</h2>
+    <ul>
+      <li v-for="item of myMovies">{{item}}</li>
+    </ul>
+  </div>
+</template>
+
+
+<script src="../src/static/scripts/vue.js"></script>
+<script>
+  // 这个是一号子组件
+  const component1 = {
+    template: "#com1",
+    // props: ["movies"],
+    props: {
+      // movies: [String , Array ]
+      // movies: Array
+      // movies: null
+      myMovies: {
+        type: Array,
+        required: true,
+        default: function() {
+          return [1, 2, 3, 4] 
+        }
+      },
+      
+      message:  {
+        default: "你好吗"
+      }
+    },
+    data() {
+      return {
+      }
+    }
+  }
+
+  // 这个是Vue实例
+  const app = new Vue({
+    el: "#app",
+    data: {
+      movies: [1, 2, 3, 4, 5]
+    },
+    components: {
+      component1 // 这个是字面量新写法
+    }
+  })
+</script>
+</html>

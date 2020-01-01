@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .active {
+      color: red;
+    }
+    .lazy {
+      color: blue;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h2>{{firstName}}</h2>
+    <input type="text" :value="firstName" @input="virtual_model($event.target.value)" lazy>
+    <input type="text" v-model.lazy="firstName">
+    <label for="male">
+      <input type="radio" value="男" v-model="radio" id="male">男
+    </label>
+    <label for="female">
+      <input type="radio" value="女" v-model="radio" id="female">女
+    </label>
+
+    <h2>你是{{radio}}的！</h2>
+<!-- checkbox单选框 -->
+    <label for="license">
+      <input type="checkbox" v-model="check" id="license"> 同意协议
+    </label>
+    <button :disabled="!check">下一步</button>
+
+<!-- 多选框 -->
+    <input type="checkbox" v-model="checks" value="篮球">篮球
+    <input type="checkbox" v-model="checks" value="足球">足球
+    <input type="checkbox" v-model="checks" value="网球">网球
+    <input type="checkbox" v-model="checks" value="台球">台球
+    <p>
+      {{checks}}
+    </p>
+    <!-- 下拉 -->
+    <select v-model="select">
+      <option v-for="option in options" :value="option.value">{{option.name}}</option>
+    </select>
+    <p>
+      你选中的是：{{select}}
+    </p>
+    <!-- 多个下拉 -->
+    <select v-model="selects" multiple>
+      <option v-for="option in options" :value="option.value">{{option.name}}</option>
+    </select>
+    <p>
+      你选中的是：{{selects}}
+    </p>
+
+    <h2>现在是北京时间：{{example}}</h2>
+    <my-cpn :propc.sync="message"></my-cpn>
+    <my-cpn :propc.sync="message"></my-cpn>
+    <my-cpn :propc.sync="message"></my-cpn>
+  </div>
+</body>
+
+<template id="cdn2">
+  <div>
+    <h2>组件写法3</h2>
+    <h2>{{counter}}</h2>
+    <button @click="btnIncrement">+</button>
+    <button @click="btnDecrement">-</button>
+  </div>
+</template>
+
+<script src="./src/static/scripts/vue.js"></script>
+<script type="text/x-template" id="cdn1">
+  <div>
+    <h2>组件写法2</h2>
+  </div>
+</script>
+<script>
+  // 这是一个表达式
+  const obj = {
+    counter: 0
+  }
+  const myComponent = Vue.extend({
+    template: `
+      <div>
+        <h2>我是一个组件</h2>
+      </div>
+    `,
+    props: {
+      propc: {
+        twoWay: true
+      }
+    }
+  })
+  // Vue.component("my-cpn", myComponent)
+  // Vue.component("my-cpn", {
+  //   template: `
+  //     <div>
+  //       <h2>{{propc}}</h2>
+  //       <input v-model="propc">
+  //     </div>
+  //   `,
+  //   props: {
+  //     propc: {
+  //       twoWay: true
+  //     }
+  //   }
+  // })
+  const app = new Vue({ 
+    el: "#app",
+    data: {
+      message: "你好啊",
+      firstName: "Leung",
+      radio: "男",
+      check: false,
+      checks: [],
+      selects: [],
+      select: "high",
+      options: [
+        {name: "高", value: "high"},
+        {name: "中", value: "medium"},
+        {name: "低", value: "low"},
+      ],
+      lastName: "Lin"
+    },
+    methods: {
+      virtual_model (str) {
+        this.firstName = str;
+      }
+    },
+    computed: {
+      example() {
+        return Date.now()
+      },
+      example1: {
+        cache: false,
+        get() {
+          return Date()
+        }
+      }
+    },
+    filters: {
+      toUpperCase(str) {
+        return str.toUpperCase()
+      },
+      toLowerCase(str) {
+        return str.toLowerCase()
+      }
+    },
+    components: {
+      // "my-cpn": myComponent
+      "my-cpn": {
+        template: "#cdn2",
+        data() {
+          // return {
+          //   counter: 0
+          // }
+          return obj
+        },
+        methods: {
+          btnIncrement() {
+            this.counter ++;
+          },
+          btnDecrement() {
+            this.counter --;
+          }
+        }
+      }
+    } 
+  })
+
+  
+</script>
+</html>

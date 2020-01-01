@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app">{{message}}</div>
+  <div id="app2">
+    <ul>
+      <li>{{movies[0]}}</li>
+      <li>{{movies[0]}}</li>
+      <li>{{movies[0]}}</li>
+      <li>{{movies[0]}}</li>
+    </ul>
+    <ul>
+      <li v-for="item in movies">{{item}}</li>
+    </ul>
+  </div>
+  <div id="app3">
+    <h2>{{name}}</h2>
+    <div>
+      <h3>当前计数：{{counter}}</h3>
+      <!-- <button v-on:click="counter++">+</button>
+            <button v-on:click="counter--">-</button> -->
+      <!-- <button v-on:click="increment">+</button>
+            <button v-on:click="subtraction">-</button> -->
+      <button @click="increment">+</button>
+      <button @click="subtraction">-</button>
+    </div>
+  </div>
+  <div id="app4">
+    
+  </div>
+</body>
+<script src="./src/static/scripts/vue.js"></script>
+<script>
+  //命令式编程
+  //Vue是一种声明式编程框架，分离逻辑和界面
+  const app = new Vue({
+    el: "#app",  // 决定了挂载在哪个元素上
+    data: {
+      message: "体验Vue"
+    }
+
+  })
+
+  //  变量定义
+  //  变量显示
+  //  变量修改
+  //  变量再显示
+
+  const app2 = new Vue({
+    el: "#app2",
+    data: {
+      message: "你好啊",
+      movies: ["星际穿越", "大话西游", "少年派", "盗梦空间"]  // 直接展示会转成字符串
+    }
+  })
+  //  v-for
+
+  //  proxy
+  const obj = {
+    name: "计数器",
+    counter: 0
+  }
+  const app3 = new Vue({
+    // el: "#app3",
+    // el: document.getElementById("app3"),
+    el: document.querySelector("#app3"),
+    data: obj,
+    methods: {  // 定义方法，仅用于这个模块，针对data指向的对象进行了call，没有做深拷贝
+      increment: function () {
+        console.log("test_add");
+        this.counter++;  // call
+      },
+      subtraction: function () {
+        console.log("test_sub");
+        this.counter--;
+      }
+    },
+    created: function () {  // 钩子函数
+      console.log("created");
+    },  // 获取到我这个函数，在Vue内部相应的生命周期中执行。
+    mounted: function () {
+      console.log("mounted");
+    }
+
+  })
+
+  // 1、拿button元素
+  // 2、添加监听事件 @click == v-on:click 简写alias 语法糖
+
+
+  // options对象的选项
+
+
+  // 生命周期，意义：编写的程序能够在某个指定的生命周期响应。
+  // new Vue()
+
+  // 代码规范，缩进两个空格
+  // template
+  const app4 = new Vue({
+    el: "#app4",
+    data: {
+      message: "你好"
+    }
+  })
+</script>
+
+</html>

@@ -1,3 +1,3 @@
 <template>
-    <h1>Hello PA!!</h1>
+    <h1>Hello Vue!!</h1>
 </template>

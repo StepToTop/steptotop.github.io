@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <left_nav :item-now="itemSelected"></left_nav>
+  </div>
+  
+</body>
+
+
+<template id="example">
+  <div>
+    <h2>你选中了:{{itemNow}}</h2>
+    <button v-for="item in categories" :key="item.id" @click="btnClick(item)">{{item.name}}</button>
+  </div>
+</template>
+
+
+<script src="../src/static/scripts/vue.js"></script>
+<script>
+  const left_nav = {
+    template: "#example",
+    props: {
+      itemNow: {
+        type: [String],
+        required: true
+      }
+    },
+    data() {
+      return {
+        categories: [
+          {id: "a", name: "一"},
+          {id: "b", name: "二"},
+          {id: "c", name: "三"},
+          {id: "d", name: "四"},]
+        }
+    },
+    methods: {
+      btnClick(item) {
+
+      }
+    }
+  }
+
+
+  const app = new Vue({
+    el: "#app",
+    data: {
+      itemSelected: ""
+    },
+    components: {
+      left_nav
+    }
+  })
+
+
+
+</script>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <!-- input复用，Vue的内部会尽可能复用原来的元素，而不会进行新的元素的创建，原来元素 -->
+    <div v-if="userType">
+      <label for="username">用户账号: </label><input key="user" id="username" type="text" placeholder="用户账号">
+    </div>
+    <div v-else>
+      <label>邮箱地址: </label><input type="text" key="email" placeholder="邮箱地址">
+    </div>
+    <button @click="handleToggle">切换类型</button>
+    <h2 v-show="isShow">{{message}}</h2>
+  </div>
+
+</body>
+<script src="../src/static/scripts/vue.js"></script>
+<script>
+  const app = new Vue({
+    el: "#app",
+    data: {
+      message: "Hello",
+      userType: true,
+      isShow: true
+    },
+    methods: {
+      handleToggle() {
+        this.userType = !this.userType
+      }
+    }
+  })
+</script>
+</html>

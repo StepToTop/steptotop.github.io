@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <h2>{{firstName}} {{lastName}}</h2>
+    <h2>{{fullName}}</h2>
+
+    <h2>{{total_price}}</h2>
+  </div>
+</body>
+<script src="./src/static/scripts/vue.js"></script>
+<script>
+  const data = {
+      firstName: "勒布朗",
+      lastName: "詹姆斯",
+      books: [
+        {id: 110, name: 'Unix编程艺术', price: 119},
+        {id: 111, name: '代码大全', price: 105},
+        {id: 112, name: '深入理解计算机原理', price: 98},
+        {id: 113, name: '现代操作系统', price: 87},
+      ]
+    };
+  const app = new Vue({
+    el: "#app",
+    data,
+    methods: {
+      getFullName () {
+        return this.firstName + " " + this.lastName;
+      }
+    },
+    computed: {
+      // name: function() {
+      //   return this.firstName + " " + this.lastName
+      // },
+      // name: 'test',
+      fullName: {
+        set: function(newValue) {
+          const names = newValue.split(" ")
+          this.firstName = names[0]
+          this.lastName = names[1]
+          // 一般不会设置set,
+        },
+        get: function() {
+          return this.firstName + " " + this.lastName
+        }
+      },
+      // fullName: function() {
+      //     return this.firstName + " " + this.lastName
+      // },
+      total_price: function() {
+        // for (let book of this.books)  这个是实例遍历
+        // for (let index in this.books)   这个是索引遍历
+        return this.books.reduce(((total, item)=>total+item.price) , 0)
+      }
+    }
+  })
+
+  const name = "梁林";
+  const obj = {
+    name,
+    run() {
+
+    }
+  }
+</script>
+</html>
