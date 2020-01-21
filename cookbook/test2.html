@@ -8,7 +8,22 @@
 </head>
 <body>
   <div id="app">
-    <left_nav :item-now="itemSelected"></left_nav>
+    <div>
+      <leftnav :item-now="itemSelected" @item-click="handleIt" @child-input="handleThis" ></leftnav>
+      
+      <interesting :message="content" ></interesting>
+    </div>
+    <!-- <div>
+      <leftnav :item-now="itemSelected" @item-click="handleIt" @child-input="handleThis" ></leftnav>
+    </div>
+    <hr>
+    <div>
+      <leftnav :item-now="itemSelected" @item-click="handleIt" @child-input="handleThis" ></leftnav>
+      <interesting :message="content" ></interesting>
+      <component :is="now_com" :item-now="itemSelected" :message="content" @item-click="handleIt" @child-input="handleThis"></component>
+      <interesting :message="content" ></interesting>
+    </div> -->
+    
   </div>
   
 </body>
@@ -18,13 +33,49 @@
   <div>
     <h2>你选中了:{{itemNow}}</h2>
     <button v-for="item in categories" :key="item.id" @click="btnClick(item)">{{item.name}}</button>
+    <input type="text" v-model="content">
   </div>
 </template>
 
+<template id="example1">
+  <div>
+    <h2>你在子组件example中输入了:{{message}}</h2>
+  </div>
+</template>
 
 <script src="../src/static/scripts/vue.js"></script>
 <script>
-  const left_nav = {
+  const mix_example = {
+    created() {
+      console.log("Hello, I'm mix part! I can be used round and round")
+    },
+    methods: {
+      btnClick(val) {
+        console.log("I won't do anything!")
+      }
+    }
+  }
+
+  const mix_example1 = {
+    created() {
+      console.log("Hello, I'm mix part1! I'm here to test which function will be call first")
+    }
+  }
+
+  // const global_mix_example = {
+  //   created() {
+  //     console.log("这个是全局混用，顺便看看顺序问题")
+  //   }
+  // }
+
+  Vue.mixin({
+    created() {
+      console.log("这个是全局混用，顺便看看顺序问题")
+    }
+  })
+
+  const leftnav = {
+    mixins: [mix_example1, mix_example],
     template: "#example",
     props: {
       itemNow: {
@@ -38,24 +89,73 @@
           {id: "a", name: "一"},
           {id: "b", name: "二"},
           {id: "c", name: "三"},
-          {id: "d", name: "四"},]
+          {id: "d", name: "四"},],
+          content: ""
         }
+    },
+    watch: {
+      content(val) {
+        this.content = val
+        this.$emit('child-input', val)
+      }
+    },
+    computed: {
+      input_content: { // 奇淫巧计
+        set(val) {
+          this.$emit('child-input', val)
+        },
+        get() {
+          return this.content
+        }
+      }
     },
     methods: {
       btnClick(item) {
-
+        // console.log(item)
+        console.log("I'll do something!")
+        this.$emit('item-click', item)  // 注意驼峰！就算换写法都不行
+      },
+      inputTest() {
+        this.$emit('child-input', this.content)
       }
+    },
+    created() {
+      console.log("I'm the function of leftnav called while created!")
     }
   }
 
+  const interesting = {
+    template: "#example1",
+    props: {
+      message: {
+        type: [String],
+      }
+    },
+    data() {
+      return {
+      }
+    },
+  }
 
   const app = new Vue({
     el: "#app",
     data: {
-      itemSelected: ""
+      itemSelected: "",
+      content: "",
+      now_com: "leftnav"
     },
     components: {
-      left_nav
+      leftnav,
+      interesting
+    },
+    methods: {
+      handleIt(val) {
+        // console.log(val)
+        this.itemSelected = val.name
+      },
+      handleThis(val) {
+        this.content = val
+      }
     }
   })
 
